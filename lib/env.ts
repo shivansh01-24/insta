@@ -29,7 +29,7 @@ try {
 } catch (e: unknown) {
   const zodErr = e as z.ZodError;
   if (zodErr && Array.isArray(zodErr.issues)) {
-    console.warn("⚠️ Environment variables missing or unconfigured (Using fallback defaults for build/dev):");
+    console.warn("⚠️ Environment variables missing or unconfigured (Using safe fallback defaults for build/dev):");
     zodErr.issues.forEach((issue: any) => {
       const pathStr = Array.isArray(issue.path) ? issue.path.join(".") : String(issue.path || "");
       console.warn(`   - ${pathStr}: ${issue.message}`);
@@ -39,10 +39,10 @@ try {
     DATABASE_URL: process.env.DATABASE_URL || "postgresql://user:pass@localhost:5432/dbname",
     SESSION_SECRET: process.env.SESSION_SECRET || "fallback_session_secret_at_least_32_chars_long_12345",
     ENCRYPTION_KEY: process.env.ENCRYPTION_KEY || "fallback_encryption_key_at_least_32_chars_long_12345",
-    META_APP_ID: process.env.META_APP_ID || "",
-    META_APP_SECRET: process.env.META_APP_SECRET || "",
+    META_APP_ID: process.env.META_APP_ID || "fallback_meta_app_id",
+    META_APP_SECRET: process.env.META_APP_SECRET || "fallback_meta_app_secret",
     META_REDIRECT_URI: process.env.META_REDIRECT_URI || "http://localhost:3000/api/instagram/callback",
-    META_WEBHOOK_VERIFY_TOKEN: process.env.META_WEBHOOK_VERIFY_TOKEN || "",
+    META_WEBHOOK_VERIFY_TOKEN: process.env.META_WEBHOOK_VERIFY_TOKEN || "fallback_verify_token",
     META_GRAPH_API_VERSION: process.env.META_GRAPH_API_VERSION || "v23.0",
     NODE_ENV: (process.env.NODE_ENV as "development" | "production" | "test") || "development",
   };
