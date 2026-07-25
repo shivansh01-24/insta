@@ -30,8 +30,9 @@ try {
   const zodErr = e as z.ZodError;
   if (zodErr && Array.isArray(zodErr.issues)) {
     console.warn("⚠️ Environment variables missing or unconfigured (Using fallback defaults for build/dev):");
-    zodErr.issues.forEach((issue: { path: (string | number)[]; message: string }) => {
-      console.warn(`   - ${issue.path.join(".")}: ${issue.message}`);
+    zodErr.issues.forEach((issue: any) => {
+      const pathStr = Array.isArray(issue.path) ? issue.path.join(".") : String(issue.path || "");
+      console.warn(`   - ${pathStr}: ${issue.message}`);
     });
   }
   parsedEnv = {
