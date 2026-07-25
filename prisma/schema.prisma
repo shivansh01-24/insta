@@ -1,0 +1,52 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id                         String                     @id @default(cuid())
+  name                       String
+  email                      String                     @unique
+  password                   String
+  createdAt                  DateTime                   @default(now())
+  updatedAt                  DateTime                   @updatedAt
+  connectedInstagramAccount ConnectedInstagramAccount?
+  oauthSessions              OAuthSession[]
+}
+
+model ConnectedInstagramAccount {
+  id                   String    @id @default(cuid())
+  userId               String    @unique
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  instagramUserId      String    @unique
+  username             String
+  name                 String?
+  profilePictureUrl    String?
+  facebookUserId       String?
+  facebookPageId       String
+  facebookPageName     String
+  encryptedAccessToken String    // Industry-standard encrypted token
+  tokenType            String?   // e.g. "Bearer"
+  tokenExpiry          DateTime
+  lastTokenRefresh     DateTime?
+  connectedAt          DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  @@index([facebookPageId])
+  @@index([facebookUserId])
+}
+
+model OAuthSession {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stateToken String   @unique
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+
+  @@index([expiresAt])
+}
