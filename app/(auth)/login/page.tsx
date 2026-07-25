@@ -2,14 +2,13 @@
 
 import { useState, Suspense } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { InstagramIcon } from "@/components/icons/instagram-icon";
 import { ArrowRight, AlertCircle, RefreshCw } from "lucide-react";
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const queryError = searchParams.get("error");
 
@@ -35,7 +34,7 @@ function LoginForm() {
         throw new Error(data.error || "Login failed");
       }
 
-      router.push("/dashboard");
+      window.location.href = "/dashboard";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Invalid credentials");
     } finally {

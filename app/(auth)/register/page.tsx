@@ -2,14 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
 import { InstagramIcon } from "@/components/icons/instagram-icon";
 import { ArrowRight, AlertCircle } from "lucide-react";
 
 export default function RegisterPage() {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -33,7 +31,7 @@ export default function RegisterPage() {
         throw new Error(data.error || "Registration failed");
       }
 
-      router.push("/dashboard");
+      window.location.href = "/dashboard";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -112,7 +110,7 @@ export default function RegisterPage() {
 
           <p className="text-center text-xs text-zinc-400">
             Already have an account?{" "}
-            <Link href="/login" className="text-purple-400 hover:text-purple-300 font-semibold underline">
+            <Link href="/register" className="text-purple-400 hover:text-purple-300 font-semibold underline">
               Log in
             </Link>
           </p>
